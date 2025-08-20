@@ -44,3 +44,46 @@
 ...
 
 ---
+
+## USER STORIES - Consultation Factures Shine (Éco-conception)
+
+---
+
+### Story 1 : Chargement factures éco-optimisé
+
+**En tant que** utilisateur consultant mes factures,  
+**je veux** que seules les métadonnées essentielles (montant, date, statut) s’affichent en premier,  
+**afin de** réduire la consommation de données et accélérer l’accès à l’information.
+
+- 🎯 Objectif : 1ère vue facture < 500 ms  
+- 🧱 BP associée : chargement différé du PDF (lazy-loading) / pagination  
+- 🛠️ KPI : poids moyen consultation facture < 200 Ko  
+- 📅 Tag roadmap : M2  
+
+---
+
+### Story 2 : Réduction empreinte stockage factures
+
+**En tant que** utilisateur récurrent,  
+**je veux** que mes factures soient stockées et servies dans un format optimisé,  
+**afin de** limiter l’impact carbone du stockage et du transfert réseau.
+
+- 🎯 Objectif : 100% factures en PDF/A compressé  
+- 🧱 BP associée : formats légers / mutualisation CDN / déduplication  
+- 🛠️ KPI : taille moyenne facture < 150 Ko  
+- 📅 Tag roadmap : M3  
+
+---
+
+### Story 3 : Consultation durable multi-appareils
+
+**En tant que** utilisateur mobile,  
+**je veux** que la consultation de mes factures soit adaptée à mon écran et à ma connexion,  
+**afin de** éviter des chargements inutiles ou des surconsommations énergétiques.
+
+- 🎯 Objectif : responsive + mode faible conso activé  
+- 🧱 BP associée : responsive design, compression adaptative, dark mode par défaut en mobile  
+- 🛠️ KPI : consommation énergie mesurée via EcoIndex < B  
+- 📅 Tag roadmap : M4  
+
+---
