@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, Suspense, lazy } from 'react'
 import {
   Activity,
   Cpu,
@@ -13,8 +13,10 @@ import {
   Image,
   Cloud
 } from 'lucide-react'
-import * as THREE from 'three'
 import _ from 'lodash'
+
+// Lazy loading du composant 3D
+const ThreeScene = lazy(() => import('./components/ThreeScene'))
 
 type Stat = {
   bundle: number
@@ -71,61 +73,8 @@ export default function App() {
   })
   const [ready, setReady] = useState(false)
 
-  const canvasRef = useRef<HTMLCanvasElement>(null)
   const injectedRef = useRef(false)
   const intervalRef = useRef<number>()
-
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1_000)
-    camera.position.z = 30
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
-    renderer.setSize(canvas.clientWidth || 640, canvas.clientHeight || 480)
-    renderer.setPixelRatio(window.devicePixelRatio)
-    const ambient = new THREE.AmbientLight(0xffffff, 0.3)
-    scene.add(ambient)
-    const dir = new THREE.DirectionalLight(0xffffff, 0.8)
-    dir.position.set(25, 25, 25)
-    scene.add(dir)
-    for (let i = 0; i < 20; i++) {
-      const mat = new THREE.MeshPhongMaterial({ color: Math.random() * 0xffffff, shininess: 80 })
-      const geo = new THREE.BoxGeometry(1 + Math.random(), 1 + Math.random(), 1 + Math.random())
-      const cube = new THREE.Mesh(geo, mat)
-      cube.position.set((Math.random() - 0.5) * 50, (Math.random() - 0.5) * 50, (Math.random() - 0.5) * 50)
-      scene.add(cube)
-    }
-    const animate = () => {
-      let i = 0
-      scene.traverse((o: any) => {
-        if (o.isMesh) {
-          o.rotation.x += 0.002 * ((i % 3) + 1)
-          o.rotation.y += 0.003 * ((i % 4) + 1)
-        }
-        i++
-      })
-      renderer.render(scene, camera)
-      requestAnimationFrame(animate)
-    }
-    animate()
-    const onResize = _.throttle(() => {
-      camera.aspect = canvas.clientWidth / canvas.clientHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight)
-    }, 200)
-    window.addEventListener('resize', onResize)
-    return () => {
-      window.removeEventListener('resize', onResize)
-      renderer.dispose()
-      scene.traverse((o: any) => {
-        if (o.geometry) o.geometry.dispose()
-        if (o.material) {
-          Array.isArray(o.material) ? o.material.forEach((m: any) => m.dispose()) : o.material.dispose()
-        }
-      })
-    }
-  }, [])
 
   useEffect(() => {
     if (injectedRef.current) return
@@ -284,9 +233,16 @@ export default function App() {
             <Zap className="w-8 h-8 text-yellow-400" />
             <h2 className="text-2xl font-bold text-white">Visualisation 3D</h2>
           </div>
-          <div className="flex justify-center">
-            <canvas ref={canvasRef} className="rounded-xl border border-white/20 shadow-2xl w-full h-96" />
-          </div>
+          <Suspense fallback={
+            <div className="flex justify-center items-center h-96">
+              <div className="text-center">
+                <div className="animate-spin h-16 w-16 rounded-full border-b-2 border-white mx-auto mb-4" />
+                <p className="text-slate-300">Chargement de la scène 3D...</p>
+              </div>
+            </div>
+          }>
+            <ThreeScene />
+          </Suspense>
           <p className="text-slate-300 text-center mt-4">500 cubes tournants en temps réel</p>
         </section>
       </div>
