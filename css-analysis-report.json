@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-08-20T21:07:10.509Z",
+  "totalSize": 23482,
+  "gzippedSize": 5044,
+  "brotliSize": 4374,
+  "gzipRatio": 78.5,
+  "brotliRatio": 81.4,
+  "files": [
+    {
+      "name": "index-CdiKDAfw.css",
+      "size": 23482,
+      "gzippedSize": 5044,
+      "brotliSize": 4374,
+      "analysis": {
+        "rules": 291,
+        "selectors": 306,
+        "properties": 296,
+        "mediaQueries": 9,
+        "keyframes": 6,
+        "imports": 2,
+        "tailwindClasses": 135,
+        "uniqueSelectors": 287,
+        "uniqueProperties": 108
+      }
+    }
+  ]
+}

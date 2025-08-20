@@ -10,7 +10,8 @@ export default defineConfig({
       algorithm: 'both',
       threshold: 1024,
       compressionOptions: { level: 9, memLevel: 9 }
-    })
+    }),
+
   ],
   
   // Optimisation des dépendances
