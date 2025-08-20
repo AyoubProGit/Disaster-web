@@ -63,6 +63,24 @@ export const LazyOfflineTest = (props: any) => {
   }, React.createElement(lazy(() => import('../components/OfflineTest')), props))
 }
 
+export const LazyCarbonMetrics = (props: any) => {
+  return React.createElement(Suspense, {
+    fallback: React.createElement(SimpleFallback, { componentName: 'CarbonMetrics' })
+  }, React.createElement(lazy(() => import('../components/CarbonMetrics')), props))
+}
+
+export const LazyCarbonHistory = (props: any) => {
+  return React.createElement(Suspense, {
+    fallback: React.createElement(SimpleFallback, { componentName: 'CarbonHistory' })
+  }, React.createElement(lazy(() => import('../components/CarbonHistory')), props))
+}
+
+export const LazyCarbonRecommendations = (props: any) => {
+  return React.createElement(Suspense, {
+    fallback: React.createElement(SimpleFallback, { componentName: 'CarbonRecommendations' })
+  }, React.createElement(lazy(() => import('../components/CarbonRecommendations')), props))
+}
+
 // Système de préchargement simple
 class PreloadManager {
   private preloadedComponents = new Set<string>()
@@ -92,6 +110,15 @@ class PreloadManager {
         case 'OfflineTest':
           await import('../components/OfflineTest')
           break
+        case 'CarbonMetrics':
+          await import('../components/CarbonMetrics')
+          break
+        case 'CarbonHistory':
+          await import('../components/CarbonHistory')
+          break
+        case 'CarbonRecommendations':
+          await import('../components/CarbonRecommendations')
+          break
       }
       
       this.preloadedComponents.add(componentName)
@@ -116,7 +143,7 @@ class PreloadManager {
   }
 
   getStats() {
-    const total = 6
+    const total = 9
     const preloaded = this.preloadedComponents.size
     const pending = 0
 

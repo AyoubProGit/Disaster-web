@@ -11,7 +11,8 @@ import {
   FileText,
   FilePlus,
   Image,
-  Cloud
+  Cloud,
+  Leaf
 } from 'lucide-react'
 import { logWarn } from './utils/logger'
 import { 
@@ -21,6 +22,9 @@ import {
   LazyServiceWorkerManager, 
   LazyUpdateNotification, 
   LazyOfflineTest,
+  LazyCarbonMetrics,
+  LazyCarbonHistory,
+  LazyCarbonRecommendations,
   usePreloadCriticalComponents
 } from './utils/lazyLoader'
 import LazyLoadingMonitor from './components/LazyLoadingMonitor'
@@ -233,6 +237,34 @@ export default function App() {
           <Card icon={<Activity className="w-8 h-8 text-lime-400" />} title="RPS" value={stats.rps} tone="bg-white/10 border-white/20" />
           <Card icon={<Timer className="w-8 h-8 text-yellow-400" />} title="Load page" value={`${stats.pl} ms`} tone="bg-white/10 border-white/20" />
         </section>
+
+        {/* Section des métriques carbone RGESN 8.2 */}
+        <section className="mb-16">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Leaf className="w-8 h-8 text-green-400" />
+              <h2 className="text-3xl font-bold text-white">Métriques d'Empreinte Carbone</h2>
+              <Leaf className="w-8 h-8 text-green-400" />
+            </div>
+            <p className="text-xl text-slate-300 max-w-4xl mx-auto">
+              Suivi de l'impact environnemental selon RGESN 8.2 - Mesure et optimisation continue de l'empreinte carbone
+            </p>
+          </div>
+
+          {/* Métriques carbone en temps réel */}
+          <LazyCarbonMetrics />
+
+          {/* Historique et tendances */}
+          <div className="mt-8">
+            <LazyCarbonHistory />
+          </div>
+
+          {/* Recommandations d'optimisation */}
+          <div className="mt-8">
+            <LazyCarbonRecommendations />
+          </div>
+        </section>
+
         <section className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 mb-16">
           <div className="flex items-center gap-4 mb-6">
             <Zap className="w-8 h-8 text-yellow-400" />
