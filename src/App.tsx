@@ -14,8 +14,9 @@ import {
   Cloud
 } from 'lucide-react'
 
-// Lazy loading du composant 3D
+// Lazy loading des composants
 const ThreeScene = lazy(() => import('./components/ThreeScene'))
+const CSSBackground = lazy(() => import('./components/CSSBackground'))
 
 type Stat = {
   bundle: number
@@ -202,10 +203,15 @@ export default function App() {
     )
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
-      <div className="fixed inset-0 opacity-10 pointer-events-none">
-        <img src="http://localhost:5001/static/large.jpg" className="absolute inset-0 w-full h-full object-cover mix-blend-overlay" />
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative">
+      {/* Fond CSS optimisé au lieu de l'image lourde */}
+      <Suspense fallback={
+        <div className="fixed inset-0 opacity-5 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-blue-500/20" />
+        </div>
+      }>
+        <CSSBackground />
+      </Suspense>
       <div className="relative z-10 container mx-auto px-6 py-12">
         <header className="text-center mb-16">
           <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-6 animate-pulse">
