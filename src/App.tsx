@@ -13,6 +13,7 @@ import {
   Image,
   Cloud
 } from 'lucide-react'
+import { logWarn } from './utils/logger'
 
 // Lazy loading des composants
 const ThreeScene = lazy(() => import('./components/ThreeScene'))
@@ -182,7 +183,7 @@ export default function App() {
           rps
         }))
       } catch (err) {
-        console.warn('Erreur lors du fetch des stats serveur', err)
+        logWarn('Erreur lors du fetch des stats serveur', err)
       }
     }, 5_000) // Réduit à 5 secondes au lieu de 1 seconde
 

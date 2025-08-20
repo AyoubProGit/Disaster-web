@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Activity, ChevronLeft, ChevronRight, Download, Zap } from 'lucide-react'
+import { logDebug } from '../utils/logger'
 
 interface PayloadData {
   id: number
@@ -17,6 +18,9 @@ interface PaginationInfo {
   totalPages: number
   hasNext: boolean
   hasPrev: boolean
+  metadata?: {
+    dataSize: number
+  }
 }
 
 interface PayloadResponse {
@@ -122,7 +126,7 @@ export default function PayloadManager() {
       }
       
       const result = await response.json()
-      console.log('Compression test:', result)
+      logDebug('Compression test:', result)
       
       // Décoder les données compressées
       const decoded = Buffer.from(result.data, 'base64').toString()
