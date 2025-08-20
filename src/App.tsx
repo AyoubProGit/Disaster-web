@@ -19,6 +19,9 @@ import { logWarn } from './utils/logger'
 const ThreeScene = lazy(() => import('./components/ThreeScene'))
 const CSSBackground = lazy(() => import('./components/CSSBackground'))
 const PayloadManager = lazy(() => import('./components/PayloadManager'))
+const ServiceWorkerManager = lazy(() => import('./components/ServiceWorkerManager'))
+const UpdateNotification = lazy(() => import('./components/UpdateNotification'))
+const OfflineTest = lazy(() => import('./components/OfflineTest'))
 
 type Stat = {
   bundle: number
@@ -257,7 +260,30 @@ export default function App() {
         }>
           <PayloadManager />
         </Suspense>
+
+        {/* Gestionnaire Service Worker pour le cache offline */}
+        <Suspense fallback={
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+            <div className="animate-spin h-8 w-8 rounded-full border-b-2 border-white mx-auto" />
+          </div>
+        }>
+          <ServiceWorkerManager />
+        </Suspense>
+
+        {/* Tests de fonctionnement offline */}
+        <Suspense fallback={
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+            <div className="animate-spin h-8 w-8 rounded-full border-b-2 border-white mx-auto" />
+          </div>
+        }>
+          <OfflineTest />
+        </Suspense>
       </div>
+
+      {/* Notification de mise à jour du Service Worker */}
+      <Suspense fallback={null}>
+        <UpdateNotification onUpdate={() => window.location.reload()} />
+      </Suspense>
     </div>
   )
 }
