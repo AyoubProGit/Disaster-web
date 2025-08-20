@@ -17,6 +17,7 @@ import {
 // Lazy loading des composants
 const ThreeScene = lazy(() => import('./components/ThreeScene'))
 const CSSBackground = lazy(() => import('./components/CSSBackground'))
+const PayloadManager = lazy(() => import('./components/PayloadManager'))
 
 type Stat = {
   bundle: number
@@ -169,10 +170,6 @@ export default function App() {
     if (intervalRef.current) return
 
     intervalRef.current = window.setInterval(async () => {
-      for (let i = 0; i < 2; i++) {
-        fetch(`http://localhost:5001/api/payload?${Date.now()}_${i}`)
-      }
-
       try {
         const { memory, load, rps } = await fetch('http://localhost:5001/api/server', {
           cache: 'no-store'
@@ -187,7 +184,7 @@ export default function App() {
       } catch (err) {
         console.warn('Erreur lors du fetch des stats serveur', err)
       }
-    }, 1_000)
+    }, 5_000) // Réduit à 5 secondes au lieu de 1 seconde
 
     return () => clearInterval(intervalRef.current)
   }, [])
@@ -250,6 +247,15 @@ export default function App() {
           </Suspense>
           <p className="text-slate-300 text-center mt-4">500 cubes tournants en temps réel</p>
         </section>
+
+        {/* Nouvelle section pour la gestion des données optimisée */}
+        <Suspense fallback={
+          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
+            <div className="animate-spin h-8 w-8 rounded-full border-b-2 border-white mx-auto" />
+          </div>
+        }>
+          <PayloadManager />
+        </Suspense>
       </div>
     </div>
   )

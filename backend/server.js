@@ -6,6 +6,7 @@ import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { staticCacheMiddleware, apiCacheMiddleware } from './middleware/cache.js'
+import payloadRouter from './routes/payload.js'
 
 const app = express()
 const PORT = process.env.PORT || 5001
@@ -59,11 +60,7 @@ app.get('/api/server', apiCacheMiddleware, (_, res) => {
   })
 })
 
-// --- API payload ---
-app.get('/api/payload', apiCacheMiddleware, (_, res) => {
-  const block = 'x'.repeat(1_024)
-  const big = Array(1_024).fill(block)
-  res.json({ data: big, ts: Date.now() })
-})
+// --- API payload optimisée avec pagination et streaming ---
+app.use('/api/payload', apiCacheMiddleware, payloadRouter)
 
 app.listen(PORT, () => console.log(`backend on :${PORT}`))
