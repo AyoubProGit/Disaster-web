@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
@@ -7,49 +7,61 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { staticCacheMiddleware, apiCacheMiddleware } from './middleware/cache.js';
 import payloadRouter from './routes/payload.js';
+
 const app = express();
 const PORT = process.env.PORT || 5001;
+
 // --- RPS Middleware (doit être AVANT routes/static) ---
-const rpsWindow = new Array(10).fill(0); // 10 "tranches" de 100ms = 1s
+const rpsWindow: number[] = new Array(10).fill(0); // 10 "tranches" de 100ms = 1s
 let rpsIndex = 0;
+
 setInterval(() => {
-    rpsIndex = (rpsIndex + 1) % rpsWindow.length;
-    rpsWindow[rpsIndex] = 0;
+  rpsIndex = (rpsIndex + 1) % rpsWindow.length;
+  rpsWindow[rpsIndex] = 0;
 }, 100);
-app.use((req, res, next) => {
-    rpsWindow[rpsIndex]++;
-    next();
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  rpsWindow[rpsIndex]++;
+  next();
 });
-app.use((_, res, next) => {
-    res.set('Timing-Allow-Origin', '*');
-    next();
+
+app.use((_, res: Response, next: NextFunction) => {
+  res.set('Timing-Allow-Origin', '*');
+  next();
 });
-app.use(helmet({
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: false,
-    crossOriginOpenerPolicy: false
+
+app.use(helmet({ 
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false
 }));
+
 app.use(cors());
 app.use(compression());
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 // --- Static assets avec cache optimisé RGESN 7.x ---
 app.use('/static', staticCacheMiddleware, express.static(path.join(__dirname, 'static'), {
-    extensions: ['js', 'css', 'jpg', 'png', 'webp', 'avif'],
-    maxAge: 31536000, // 1 an par défaut
-    etag: true,
-    lastModified: true
+  extensions: ['js', 'css', 'jpg', 'png', 'webp', 'avif'],
+  maxAge: 31536000, // 1 an par défaut
+  etag: true,
+  lastModified: true
 }));
+
 // --- API server ---
-app.get('/api/server', apiCacheMiddleware, (_, res) => {
-    const rps = rpsWindow.reduce((a, b) => a + b, 0);
-    res.json({
-        memory: process.memoryUsage().rss,
-        load: +os.loadavg()[0].toFixed(2),
-        rps
-    });
+app.get('/api/server', apiCacheMiddleware, (_, res: Response) => {
+  const rps = rpsWindow.reduce((a, b) => a + b, 0);
+  res.json({
+    memory: process.memoryUsage().rss,
+    load: +os.loadavg()[0].toFixed(2),
+    rps
+  });
 });
+
 // --- API payload optimisée avec pagination et streaming ---
 app.use('/api/payload', apiCacheMiddleware, payloadRouter);
+
 app.listen(PORT, () => console.log(`backend on :${PORT}`));
