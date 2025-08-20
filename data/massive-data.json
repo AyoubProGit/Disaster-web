@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "generated": "2024-01-01T00:00:00.000Z",
+    "purpose": "Deliberately large dataset for performance training",
+    "size": "Intentionally over 5MB",
+    "warning": "This file is purposely bloated - do not optimize!"
+  },
+  "users": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john@example.com",
+      "bio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+      "preferences": {
+        "theme": "dark",
+        "language": "en",
+        "notifications": true,
+        "marketing": false,
+        "analytics": true,
+        "cookies": true,
+        "location": true,
+        "camera": false,
+        "microphone": false,
+        "storage": true,
+        "sync": true,
+        "backup": true,
+        "sharing": false,
+        "social": true,
+        "recommendations": true,
+        "personalization": true,
+        "tracking": false,
+        "advertising": false,
+        "performance": true,
+        "security": true,
+        "privacy": false
+      },
+      "history": [
+        {"id": 0, "action": "Action 0", "timestamp": "2024-01-01T00:00:00.000Z", "details": "Detailed information about action 0 Detailed information about action 0 ", "metadata": {"ip": "192.168.1.0", "userAgent": "Mozilla/5.0 (compatible; TrainingBot/0/1.0)", "referer": "https://example.com/page0", "duration": 0, "size": 0, "cached": true, "compressed": false, "headers": {"accept": "application/json", "accept-encoding": "gzip, deflate", "accept-language": "en-US,en;q=0.9", "cache-control": "no-cache", "connection": "keep-alive", "host": "localhost:3000", "pragma": "no-cache", "upgrade-insecure-requests": "1"}}},
+        {"id": 1, "action": "Action 1", "timestamp": "2024-01-01T01:01:00.000Z", "details": "Detailed information about action 1 Detailed information about action 1 ", "metadata": {"ip": "192.168.1.1", "userAgent": "Mozilla/5.0 (compatible; TrainingBot/1/1.0)", "referer": "https://example.com/page1", "duration": 100, "size": 1024, "cached": false, "compressed": false, "headers": {"accept": "application/json", "accept-encoding": "gzip, deflate", "accept-language": "en-US,en;q=0.9", "cache-control": "no-cache", "connection": "keep-alive", "host": "localhost:3000", "pragma": "no-cache", "upgrade-insecure-requests": "1"}}}
+      ]
+    }
+  ],
+  "products": [
+    {"id": 1, "name": "Product 1", "description": "This is an incredibly detailed description of product 1. It contains extensive information about features, benefits, specifications, compatibility, warranty, support, and much more. This is an incredibly detailed description of product 1. It contains extensive information about features, benefits, specifications, compatibility, warranty, support, and much more. ", "price": 299.99, "currency": "USD", "category": "Category 1", "subcategory": "Subcategory 1", "brand": "Brand 1", "sku": "SKU-000001", "availability": "in-stock", "rating": 4.5, "reviewCount": 150, "images": [{"id": 0, "url": "https://picsum.photos/800/600?random=0", "alt": "Product 1 image 1", "caption": "High resolution image 1 of product 1High resolution image 1 of product 1"}], "specifications": {"dimensions": {"length": 25.5, "width": 15.2, "height": 8.7, "weight": 1.2, "unit": "cm"}, "material": "Material 1", "color": "Color 1", "warranty": "2 years", "certifications": ["Certification 1", "Certification 2"], "compatibility": ["Compatible with 1", "Compatible with 2"], "features": [{"name": "Feature 1", "description": "Detailed description of feature 1 Detailed description of feature 1 ", "enabled": true}, {"name": "Feature 2", "description": "Detailed description of feature 2 Detailed description of feature 2 ", "enabled": false}]}, "reviews": [{"id": 0, "userId": 123, "rating": 5, "title": "Review 1 for product 1", "content": "This is a comprehensive review of product 1. The reviewer discusses various aspects including quality, performance, value for money, and overall satisfaction. This is a comprehensive review of product 1. The reviewer discusses various aspects including quality, performance, value for money, and overall satisfaction. ", "helpful": 45, "timestamp": "2024-01-01T00:00:00.000Z", "verified": true}]},
+    {"id": 2, "name": "Product 2", "description": "This is an incredibly detailed description of product 2. It contains extensive information about features, benefits, specifications, compatibility, warranty, support, and much more. This is an incredibly detailed description of product 2. It contains extensive information about features, benefits, specifications, compatibility, warranty, support, and much more. ", "price": 199.99, "currency": "USD", "category": "Category 2", "subcategory": "Subcategory 2", "brand": "Brand 2", "sku": "SKU-000002", "availability": "out-of-stock", "rating": 3.8, "reviewCount": 89, "images": [{"id": 0, "url": "https://picsum.photos/800/600?random=10", "alt": "Product 2 image 1", "caption": "High resolution image 1 of product 2High resolution image 1 of product 2"}], "specifications": {"dimensions": {"length": 30.1, "width": 20.5, "height": 12.3, "weight": 2.1, "unit": "cm"}, "material": "Material 2", "color": "Color 2", "warranty": "3 years", "certifications": ["Certification 1", "Certification 2"], "compatibility": ["Compatible with 1", "Compatible with 2"], "features": [{"name": "Feature 1", "description": "Detailed description of feature 1 Detailed description of feature 1 ", "enabled": true}, {"name": "Feature 2", "description": "Detailed description of feature 2 Detailed description of feature 2 ", "enabled": false}]}, "reviews": [{"id": 0, "userId": 456, "rating": 4, "title": "Review 1 for product 2", "content": "This is a comprehensive review of product 2. The reviewer discusses various aspects including quality, performance, value for money, and overall satisfaction. This is a comprehensive review of product 2. The reviewer discusses various aspects including quality, performance, value for money, and overall satisfaction. ", "helpful": 23, "timestamp": "2024-01-01T00:00:00.000Z", "verified": false}]}
+  ],
+  "analytics": {
+    "pageViews": [
+      {"id": 0, "path": "/page0", "timestamp": "2024-01-01T00:00:00.000Z", "userAgent": "Mozilla/5.0 (compatible; Bot0/1.0)", "ip": "192.168.0.0", "referer": null, "duration": 45000, "bounced": true, "sessionId": "session-0", "events": []},
+      {"id": 1, "path": "/page1", "timestamp": "2024-01-01T01:01:01.000Z", "userAgent": "Mozilla/5.0 (compatible; Bot1/1.0)", "ip": "192.168.0.1", "referer": "https://example.com/ref1", "duration": 120000, "bounced": false, "sessionId": "session-0", "events": [{"id": 0, "type": "event-0", "timestamp": "2024-01-01T01:01:01.000Z", "data": "Event data for event 0 Event data for event 0 "}]}
+    ]
+  },
+  "bloat": {
+    "purpose": "This section exists solely to make the file larger",
+    "data": [
+      {"id": 0, "randomString": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ", "randomNumbers": [0.1, 0.2, 0.3, 0.4, 0.5], "nestedBloat": {"level1": [{"id": 0, "data": "Nested data 0-0 Nested data 0-0 "}, {"id": 1, "data": "Nested data 0-1 Nested data 0-1 "}]}},
+      {"id": 1, "randomString": "ZYXWVUTSRQPONMLKJIHGFEDCBAZYXWVUTSRQPONMLKJIHGFEDCBA", "randomNumbers": [0.6, 0.7, 0.8, 0.9, 1.0], "nestedBloat": {"level1": [{"id": 0, "data": "Nested data 1-0 Nested data 1-0 "}, {"id": 1, "data": "Nested data 1-1 Nested data 1-1 "}]}}
+    ]
+  }
+}

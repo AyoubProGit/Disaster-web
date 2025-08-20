@@ -1,0 +1,68 @@
+name: Eco Budget Check
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  eco-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build
+    
+    - name: Start application
+      run: |
+        npm run dev &
+        echo $! > app.pid
+        sleep 30  # Wait for app to start
+    
+    - name: Install ecoindex-cli
+      run: npm install -g ecoindex-cli
+    
+    - name: Run eco index check
+      run: |
+        # Run ecoindex and capture output
+        ecoindex-cli https://localhost:3000 --output json > eco-results.json
+        
+        # Extract grade from results
+        GRADE=$(cat eco-results.json | jq -r '.grade')
+        echo "Eco grade: $GRADE"
+        
+        # Fail if grade is better than E (we want it to be bad!)
+        if [[ "$GRADE" < "E" ]]; then
+          echo "❌ FAILURE: Grade $GRADE is too good! This app should be wasteful for training purposes."
+          echo "Expected grade: E or F (worst possible)"
+          exit 1
+        else
+          echo "✅ SUCCESS: Grade $GRADE is appropriately bad for training!"
+        fi
+      continue-on-error: false
+    
+    - name: Stop application
+      run: |
+        if [ -f app.pid ]; then
+          kill $(cat app.pid) || true
+        fi
+      if: always()
+    
+    - name: Upload eco results
+      uses: actions/upload-artifact@v3
+      with:
+        name: eco-results
+        path: eco-results.json
+      if: always()
