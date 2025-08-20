@@ -13,7 +13,6 @@ import {
   Image,
   Cloud
 } from 'lucide-react'
-import _ from 'lodash'
 
 // Lazy loading du composant 3D
 const ThreeScene = lazy(() => import('./components/ThreeScene'))

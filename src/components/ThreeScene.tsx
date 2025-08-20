@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import * as THREE from 'three'
-import _ from 'lodash'
+import { throttle } from 'lodash-es'
 
 export default function ThreeScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -61,7 +61,7 @@ export default function ThreeScene() {
     animate()
 
     // Gestion du redimensionnement
-    const onResize = _.throttle(() => {
+    const onResize = throttle(() => {
       camera.aspect = canvas.clientWidth / canvas.clientHeight
       camera.updateProjectionMatrix()
       renderer.setSize(canvas.clientWidth, canvas.clientHeight)
