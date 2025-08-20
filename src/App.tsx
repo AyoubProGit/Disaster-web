@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, Suspense, lazy } from 'react'
+import React, { useEffect, useRef, useState, Suspense } from 'react'
 import {
   Activity,
   Cpu,
@@ -14,14 +14,16 @@ import {
   Cloud
 } from 'lucide-react'
 import { logWarn } from './utils/logger'
-
-// Lazy loading des composants
-const ThreeScene = lazy(() => import('./components/ThreeScene'))
-const CSSBackground = lazy(() => import('./components/CSSBackground'))
-const PayloadManager = lazy(() => import('./components/PayloadManager'))
-const ServiceWorkerManager = lazy(() => import('./components/ServiceWorkerManager'))
-const UpdateNotification = lazy(() => import('./components/UpdateNotification'))
-const OfflineTest = lazy(() => import('./components/OfflineTest'))
+import { 
+  LazyThreeScene, 
+  LazyCSSBackground, 
+  LazyPayloadManager, 
+  LazyServiceWorkerManager, 
+  LazyUpdateNotification, 
+  LazyOfflineTest,
+  usePreloadCriticalComponents
+} from './utils/lazyLoader'
+import LazyLoadingMonitor from './components/LazyLoadingMonitor'
 
 type Stat = {
   bundle: number
@@ -77,6 +79,9 @@ export default function App() {
     pl: 0
   })
   const [ready, setReady] = useState(false)
+
+  // Activer le préchargement intelligent des composants critiques
+  usePreloadCriticalComponents()
 
   const injectedRef = useRef(false)
   const intervalRef = useRef<number>()
@@ -206,13 +211,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative">
       {/* Fond CSS optimisé au lieu de l'image lourde */}
-      <Suspense fallback={
-        <div className="fixed inset-0 opacity-5 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-blue-500/20" />
-        </div>
-      }>
-        <CSSBackground />
-      </Suspense>
+      <LazyCSSBackground />
       <div className="relative z-10 container mx-auto px-6 py-12">
         <header className="text-center mb-16">
           <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-6 animate-pulse">
@@ -239,51 +238,25 @@ export default function App() {
             <Zap className="w-8 h-8 text-yellow-400" />
             <h2 className="text-2xl font-bold text-white">Visualisation 3D</h2>
           </div>
-          <Suspense fallback={
-            <div className="flex justify-center items-center h-96">
-              <div className="text-center">
-                <div className="animate-spin h-16 w-16 rounded-full border-b-2 border-white mx-auto mb-4" />
-                <p className="text-slate-300">Chargement de la scène 3D...</p>
-              </div>
-            </div>
-          }>
-            <ThreeScene />
-          </Suspense>
+          <LazyThreeScene />
           <p className="text-slate-300 text-center mt-4">500 cubes tournants en temps réel</p>
         </section>
 
         {/* Nouvelle section pour la gestion des données optimisée */}
-        <Suspense fallback={
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-            <div className="animate-spin h-8 w-8 rounded-full border-b-2 border-white mx-auto" />
-          </div>
-        }>
-          <PayloadManager />
-        </Suspense>
+        <LazyPayloadManager />
 
         {/* Gestionnaire Service Worker pour le cache offline */}
-        <Suspense fallback={
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-            <div className="animate-spin h-8 w-8 rounded-full border-b-2 border-white mx-auto" />
-          </div>
-        }>
-          <ServiceWorkerManager />
-        </Suspense>
+        <LazyServiceWorkerManager />
 
         {/* Tests de fonctionnement offline */}
-        <Suspense fallback={
-          <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20">
-            <div className="animate-spin h-8 w-8 rounded-full border-b-2 border-white mx-auto" />
-          </div>
-        }>
-          <OfflineTest />
-        </Suspense>
+        <LazyOfflineTest />
+
+        {/* Moniteur de lazy loading */}
+        <LazyLoadingMonitor />
       </div>
 
       {/* Notification de mise à jour du Service Worker */}
-      <Suspense fallback={null}>
-        <UpdateNotification onUpdate={() => window.location.reload()} />
-      </Suspense>
+      <LazyUpdateNotification onUpdate={() => window.location.reload()} />
     </div>
   )
 }
