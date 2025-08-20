@@ -5,6 +5,7 @@ import compression from 'compression'
 import os from 'os'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { staticCacheMiddleware, apiCacheMiddleware } from './middleware/cache.js'
 
 const app = express()
 const PORT = process.env.PORT || 5001
@@ -28,32 +29,28 @@ app.use((_, res, next) => {
   next()
 })
 
-app.use(helmet({ contentSecurityPolicy: false }))
+app.use(helmet({ 
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false
+}))
 app.use(cors())
 app.use(compression())
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// --- Static assets avec CORS et COEP ---
-app.use(
-  '/static',
-  (req, res, next) => {
-    res.set('Access-Control-Allow-Origin', '*')
-    res.set('Cross-Origin-Resource-Policy', 'cross-origin')
-    res.set('Cross-Origin-Opener-Policy', 'same-origin')
-    res.set('Cross-Origin-Embedder-Policy', 'require-corp')
-    next()
-  },
-  express.static(path.join(__dirname, 'static'), {
-    extensions: ['js', 'css', 'jpg'],
-    maxAge: 0
-  })
-)
+// --- Static assets avec cache optimisé RGESN 7.x ---
+app.use('/static', staticCacheMiddleware, express.static(path.join(__dirname, 'static'), {
+  extensions: ['js', 'css', 'jpg', 'png', 'webp', 'avif'],
+  maxAge: 31536000, // 1 an par défaut
+  etag: true,
+  lastModified: true
+}))
 
 // --- API server ---
-app.get('/api/server', (_, res) => {
-  res.set('Cache-Control', 'no-store')
+app.get('/api/server', apiCacheMiddleware, (_, res) => {
   const rps = rpsWindow.reduce((a, b) => a + b, 0)
   res.json({
     memory: process.memoryUsage().rss,
@@ -63,7 +60,7 @@ app.get('/api/server', (_, res) => {
 })
 
 // --- API payload ---
-app.get('/api/payload', (_, res) => {
+app.get('/api/payload', apiCacheMiddleware, (_, res) => {
   const block = 'x'.repeat(1_024)
   const big = Array(1_024).fill(block)
   res.json({ data: big, ts: Date.now() })
