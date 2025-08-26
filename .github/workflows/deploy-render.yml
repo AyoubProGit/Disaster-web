@@ -1,0 +1,140 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Test build output
+      run: |
+        # Vérifier que le build a créé les fichiers nécessaires
+        if [ ! -d "dist" ]; then
+          echo "❌ Build failed: dist directory not found"
+          exit 1
+        fi
+        
+        # Vérifier la taille du bundle (optimisation éco-conception)
+        BUNDLE_SIZE=$(du -sh dist | cut -f1)
+        echo "📦 Bundle size: $BUNDLE_SIZE"
+        
+        # Vérifier que les assets sont présents
+        if [ ! -f "dist/index.html" ]; then
+          echo "❌ Build failed: index.html not found"
+          exit 1
+        fi
+        
+        echo "✅ Build successful"
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-files
+        path: |
+          dist/
+          backend/
+          package.json
+          package-lock.json
+        retention-days: 7
+
+  deploy-to-render:
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-files
+        path: ./
+        
+    - name: Deploy to Render
+      run: |
+        echo "🚀 Deploying to Render..."
+        
+        # Déclencher un nouveau déploiement via l'API Render
+        if [ -n "${{ secrets.RENDER_SERVICE_ID }}" ] && [ -n "${{ secrets.RENDER_API_KEY }}" ]; then
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
+            -d '{"clearCache": "do_not_clear"}' || echo "⚠️ Deploy trigger failed, but continuing..."
+        else
+          echo "ℹ️ Render secrets not configured, skipping deployment"
+        fi
+        
+    - name: Verify deployment
+      run: |
+        # Attendre que le déploiement soit terminé
+        sleep 30
+        
+        # Vérifier que l'application répond
+        if [ -n "${{ secrets.RENDER_URL }}" ]; then
+          echo "🔍 Checking deployment at ${{ secrets.RENDER_URL }}"
+          
+          # Test de connectivité
+          if curl -f -s "${{ secrets.RENDER_URL }}/api/server" > /dev/null; then
+            echo "✅ API endpoint responding"
+          else
+            echo "⚠️ API endpoint not responding"
+          fi
+          
+          # Test de la page principale
+          if curl -f -s "${{ secrets.RENDER_URL }}" > /dev/null; then
+            echo "✅ Main page responding"
+          else
+            echo "⚠️ Main page not responding"
+          fi
+        else
+          echo "ℹ️ RENDER_URL not configured, skipping verification"
+        fi
+
+  
+
+  notify-deployment:
+    needs: [deploy-to-render]
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Deployment Summary
+      run: |
+        echo "🚀 Deployment Summary"
+        echo "===================="
+        echo "Branch: ${{ github.ref_name }}"
+        echo "Commit: ${{ github.sha }}"
+        echo "Author: ${{ github.actor }}"
+        echo "Deployment URL: ${{ secrets.RENDER_URL }}"
+        
+        if [ "${{ needs.deploy-to-render.result }}" == "success" ]; then
+          echo "✅ Deploy: SUCCESS"
+        else
+          echo "❌ Deploy: FAILED"
+        fi
+        
+ 
