@@ -11,7 +11,8 @@
     "build:frontend": "vite build",
     "build:backend": "tsc backend/server.ts --outDir backend --target es2020 --module es2020 --moduleResolution node --skipLibCheck --esModuleInterop",
     "lint": "eslint . --ext .ts,.tsx --ignore-pattern backend/",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "NODE_ENV=production node backend/server.js"
   },
   "dependencies": {
     "compression": "^1.7.4",
