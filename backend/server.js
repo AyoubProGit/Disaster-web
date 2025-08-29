@@ -7,10 +7,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { staticCacheMiddleware, apiCacheMiddleware } from './middleware/cache.js';
 import payloadRouter from './routes/payload.js';
-
 const app = express();
 const PORT = process.env.PORT || 5001;
-
 // --- RPS Middleware (doit être AVANT routes/static) ---
 const rpsWindow = new Array(10).fill(0); // 10 "tranches" de 100ms = 1s
 let rpsIndex = 0;
@@ -18,30 +16,24 @@ setInterval(() => {
     rpsIndex = (rpsIndex + 1) % rpsWindow.length;
     rpsWindow[rpsIndex] = 0;
 }, 100);
-
 app.use((req, res, next) => {
     rpsWindow[rpsIndex]++;
     next();
 });
-
 app.use((_, res, next) => {
     res.set('Timing-Allow-Origin', '*');
     next();
 });
-
 app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false,
     crossOriginOpenerPolicy: false
 }));
-
 app.use(cors());
 app.use(compression());
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 // --- Static assets avec cache optimisé RGESN 7.x ---
 app.use('/static', staticCacheMiddleware, express.static(path.join(__dirname, 'static'), {
     extensions: ['js', 'css', 'jpg', 'png', 'webp', 'avif'],
@@ -49,7 +41,6 @@ app.use('/static', staticCacheMiddleware, express.static(path.join(__dirname, 's
     etag: true,
     lastModified: true
 }));
-
 // --- API server ---
 app.get('/api/server', apiCacheMiddleware, (_, res) => {
     const rps = rpsWindow.reduce((a, b) => a + b, 0);
@@ -59,27 +50,6 @@ app.get('/api/server', apiCacheMiddleware, (_, res) => {
         rps
     });
 });
-
 // --- API payload optimisée avec pagination et streaming ---
 app.use('/api/payload', apiCacheMiddleware, payloadRouter);
-
-// --- SERVIR LES FICHIERS FRONTEND (NOUVEAU) ---
-// Servir les fichiers statiques du build frontend
-app.use(express.static(path.join(__dirname, '../dist'), {
-    maxAge: 31536000, // 1 an par défaut
-    etag: true,
-    lastModified: true
-}));
-
-// Gestion des routes SPA - rediriger toutes les routes non-API vers index.html
-app.get('*', (req, res) => {
-    // Ne pas intercepter les routes API
-    if (req.path.startsWith('/api/')) {
-        return res.status(404).json({ error: 'API endpoint not found' });
-    }
-    
-    // Servir index.html pour toutes les autres routes (SPA routing)
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
-
 app.listen(PORT, () => console.log(`backend on :${PORT}`));
