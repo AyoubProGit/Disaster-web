@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, Suspense } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Activity,
   Cpu,
@@ -104,9 +104,11 @@ export default function App() {
       script.crossOrigin = 'anonymous'
       h.appendChild(script)
     }
-    document.readyState === 'complete'
-      ? loadAssets()
-      : window.addEventListener('load', loadAssets, { once: true })
+    if (document.readyState === 'complete') {
+      loadAssets()
+    } else {
+      window.addEventListener('load', loadAssets, { once: true })
+    }
   }, [])
 
   useEffect(() => {

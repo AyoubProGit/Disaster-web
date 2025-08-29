@@ -27,55 +27,55 @@ const SimpleFallback = ({ componentName }: { componentName: string }) => {
 }
 
 // Composants lazy avec Suspense
-export const LazyThreeScene = (props: any) => {
+export const LazyThreeScene = (props: React.ComponentProps<typeof import('../components/ThreeScene').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'ThreeScene' })
   }, React.createElement(lazy(() => import('../components/ThreeScene')), props))
 }
 
-export const LazyCSSBackground = (props: any) => {
+export const LazyCSSBackground = (props: React.ComponentProps<typeof import('../components/CSSBackground').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'CSSBackground' })
   }, React.createElement(lazy(() => import('../components/CSSBackground')), props))
 }
 
-export const LazyPayloadManager = (props: any) => {
+export const LazyPayloadManager = (props: React.ComponentProps<typeof import('../components/PayloadManager').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'PayloadManager' })
   }, React.createElement(lazy(() => import('../components/PayloadManager')), props))
 }
 
-export const LazyServiceWorkerManager = (props: any) => {
+export const LazyServiceWorkerManager = (props: React.ComponentProps<typeof import('../components/ServiceWorkerManager').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'ServiceWorkerManager' })
   }, React.createElement(lazy(() => import('../components/ServiceWorkerManager')), props))
 }
 
-export const LazyUpdateNotification = (props: any) => {
+export const LazyUpdateNotification = (props: React.ComponentProps<typeof import('../components/UpdateNotification').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'UpdateNotification' })
   }, React.createElement(lazy(() => import('../components/UpdateNotification')), props))
 }
 
-export const LazyOfflineTest = (props: any) => {
+export const LazyOfflineTest = (props: React.ComponentProps<typeof import('../components/OfflineTest').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'OfflineTest' })
   }, React.createElement(lazy(() => import('../components/OfflineTest')), props))
 }
 
-export const LazyCarbonMetrics = (props: any) => {
+export const LazyCarbonMetrics = (props: React.ComponentProps<typeof import('../components/CarbonMetrics').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'CarbonMetrics' })
   }, React.createElement(lazy(() => import('../components/CarbonMetrics')), props))
 }
 
-export const LazyCarbonHistory = (props: any) => {
+export const LazyCarbonHistory = (props: React.ComponentProps<typeof import('../components/CarbonHistory').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'CarbonHistory' })
   }, React.createElement(lazy(() => import('../components/CarbonHistory')), props))
 }
 
-export const LazyCarbonRecommendations = (props: any) => {
+export const LazyCarbonRecommendations = (props: React.ComponentProps<typeof import('../components/CarbonRecommendations').default>) => {
   return React.createElement(Suspense, {
     fallback: React.createElement(SimpleFallback, { componentName: 'CarbonRecommendations' })
   }, React.createElement(lazy(() => import('../components/CarbonRecommendations')), props))

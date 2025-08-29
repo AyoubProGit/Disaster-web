@@ -37,38 +37,39 @@ class Logger {
     return LOG_LEVELS[level as keyof typeof LOG_LEVELS] >= this.currentLevel
   }
 
-  debug(...args: any[]): void {
+  debug(...args: unknown[]): void {
     if (this.shouldLog('debug')) {
       console.debug('[DEBUG]', ...args)
     }
   }
 
-  info(...args: any[]): void {
+  info(...args: unknown[]): void {
     if (this.shouldLog('info')) {
       console.info('[INFO]', ...args)
     }
   }
 
-  warn(...args: any[]): void {
+  warn(...args: unknown[]): void {
     if (this.shouldLog('warn')) {
       console.warn('[WARN]', ...args)
     }
   }
 
-  error(...args: any[]): void {
+  error(...args: unknown[]): void {
     if (this.shouldLog('error')) {
       console.error('[ERROR]', ...args)
     }
   }
 
   // Méthode pour les erreurs critiques (toujours affichées)
-  critical(...args: any[]): void {
+  critical(...args: unknown[]): void {
     console.error('[CRITICAL]', ...args)
   }
 
   // Méthode pour le debug conditionnel
   debugger(): void {
     if (config.enableDebugger) {
+      // eslint-disable-next-line no-debugger
       debugger
     }
   }
@@ -78,11 +79,11 @@ class Logger {
 export const logger = new Logger()
 
 // Fonctions utilitaires
-export const logDebug = (...args: any[]) => logger.debug(...args)
-export const logInfo = (...args: any[]) => logger.info(...args)
-export const logWarn = (...args: any[]) => logger.warn(...args)
-export const logError = (...args: any[]) => logger.error(...args)
-export const logCritical = (...args: any[]) => logger.critical(...args)
+export const logDebug = (...args: unknown[]) => logger.debug(...args)
+export const logInfo = (...args: unknown[]) => logger.info(...args)
+export const logWarn = (...args: unknown[]) => logger.warn(...args)
+export const logError = (...args: unknown[]) => logger.error(...args)
+export const logCritical = (...args: unknown[]) => logger.critical(...args)
 
 // Export de la configuration pour debug
 export const loggerConfig = config

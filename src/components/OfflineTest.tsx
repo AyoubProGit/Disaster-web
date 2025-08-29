@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Wifi, WifiOff, HardDrive, TestTube, CheckCircle, XCircle } from 'lucide-react'
-import { logInfo, logWarn } from '../utils/logger'
+import { TestTube, CheckCircle, XCircle } from 'lucide-react'
 
 interface TestResult {
   name: string
@@ -206,7 +205,7 @@ const OfflineTest: React.FC = () => {
         try {
           const response = await fetch(test.url, { cache: 'force-cache' })
           if (response.ok) successCount++
-        } catch (error) {
+        } catch {
           // Ignorer les erreurs pour ce test
         }
       }

@@ -5,13 +5,6 @@ import {
   TrendingUp, 
   AlertTriangle, 
   CheckCircle,
-  Clock,
-  Zap,
-  Database,
-  Image as ImageIcon,
-  Code,
-  Server,
-  Globe,
   ArrowRight,
   Star
 } from 'lucide-react';
@@ -47,7 +40,7 @@ const CarbonRecommendations: React.FC<CarbonRecommendationsProps> = ({ currentMe
   const [sortBy, setSortBy] = useState<'priority' | 'impact' | 'effort'>('priority');
 
   // Générer des recommandations basées sur les métriques actuelles
-  const generateRecommendations = (metrics?: any): Recommendation[] => {
+  const generateRecommendations = (metrics?: CarbonRecommendationsProps['currentMetrics']): Recommendation[] => {
     const recs: Recommendation[] = [];
     
     // Recommandations critiques
@@ -245,9 +238,10 @@ const CarbonRecommendations: React.FC<CarbonRecommendationsProps> = ({ currentMe
           return a.priority - b.priority;
         case 'impact':
           return b.impact.co2Reduction - a.impact.co2Reduction;
-        case 'effort':
+        case 'effort': {
           const effortOrder = { low: 1, medium: 2, high: 3 };
           return effortOrder[a.impact.effort] - effortOrder[b.impact.effort];
+        }
         default:
           return 0;
       }
@@ -294,7 +288,7 @@ const CarbonRecommendations: React.FC<CarbonRecommendationsProps> = ({ currentMe
           <span className="text-white text-sm">Catégorie:</span>
           <select
             value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value as any)}
+            onChange={(e) => setSelectedCategory(e.target.value as 'all' | 'critical' | 'high' | 'medium' | 'low')}
             className="bg-white/10 text-white border border-white/20 rounded px-3 py-1 text-sm"
           >
             <option value="all">Toutes</option>
@@ -309,7 +303,7 @@ const CarbonRecommendations: React.FC<CarbonRecommendationsProps> = ({ currentMe
           <span className="text-white text-sm">Trier par:</span>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as 'priority' | 'impact' | 'effort')}
             className="bg-white/10 text-white border border-white/20 rounded px-3 py-1 text-sm"
           >
             <option value="priority">Priorité</option>

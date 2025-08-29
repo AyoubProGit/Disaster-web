@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { RefreshCw, X, Download, Info } from 'lucide-react'
+import { RefreshCw, X, Download } from 'lucide-react'
 import { logInfo } from '../utils/logger'
 
 interface UpdateNotificationProps {

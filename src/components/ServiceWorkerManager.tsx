@@ -1,15 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { 
-  Wifi, 
-  WifiOff, 
   HardDrive, 
   RefreshCw, 
   Trash2, 
   Download,
-  Upload,
-  Activity,
-  CheckCircle,
-  AlertCircle
+  Activity
 } from 'lucide-react'
 import { logInfo, logWarn, logError } from '../utils/logger'
 
@@ -17,7 +12,7 @@ interface ServiceWorkerState {
   isInstalled: boolean
   isActive: boolean
   isOnline: boolean
-  cacheInfo: Record<string, any>
+  cacheInfo: Record<string, unknown>
   updateAvailable: boolean
   isUpdating: boolean
 }
@@ -168,7 +163,7 @@ const ServiceWorkerManager: React.FC = () => {
           let totalEntries = 0
           const cacheNames = Object.keys(cacheInfo)
           
-          Object.values(cacheInfo).forEach((cache: any) => {
+          Object.values(cacheInfo).forEach((cache: unknown) => {
             totalEntries += cache.size || 0
           })
           
@@ -343,7 +338,7 @@ const ServiceWorkerManager: React.FC = () => {
         <div className="bg-gray-800 rounded-lg p-4">
           <h4 className="text-white font-medium mb-3">Détails des caches</h4>
           <div className="space-y-2">
-            {Object.entries(swState.cacheInfo).map(([cacheName, info]: [string, any]) => (
+            {Object.entries(swState.cacheInfo).map(([cacheName, info]: [string, unknown]) => (
               <div key={cacheName} className="flex items-center justify-between p-2 bg-gray-700 rounded">
                 <span className="text-gray-300 text-sm">{cacheName}</span>
                 <span className="text-white text-sm">{info.size || 0} entrées</span>

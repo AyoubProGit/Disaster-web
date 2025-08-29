@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { Activity, ChevronLeft, ChevronRight, Download, Zap } from 'lucide-react'
+import { Activity, ChevronLeft, ChevronRight, Download } from 'lucide-react'
 import { logDebug } from '../utils/logger'
 
 interface PayloadData {

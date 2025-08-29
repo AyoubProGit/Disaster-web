@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, 
-  TrendingDown, 
   Calendar, 
   Target, 
   Award,
@@ -128,13 +127,13 @@ const CarbonHistory: React.FC = () => {
     return value < 0 ? 'text-green-500' : value > 0 ? 'text-red-500' : 'text-gray-500';
   };
 
-  // Obtenir l'icône de tendance
-  const getTrendIcon = (value: number, isPositive: boolean = true) => {
-    if (isPositive) {
-      return value > 0 ? <TrendingUp className="w-4 h-4" /> : value < 0 ? <TrendingDown className="w-4 h-4" /> : null;
-    }
-    return value < 0 ? <TrendingUp className="w-4 h-4" /> : value > 0 ? <TrendingDown className="w-4 h-4" /> : null;
-  };
+  // Obtenir l'icône de tendance (fonction supprimée car non utilisée)
+  // const getTrendIcon = (value: number, isPositive: boolean = true) => {
+  //   if (isPositive) {
+  //     return value > 0 ? <TrendingUp className="w-4 h-4" /> : value < 0 ? <TrendingDown className="w-4 h-4" /> : null;
+  //   }
+  //   return value < 0 ? <TrendingUp className="w-4 h-4" /> : value > 0 ? <TrendingDown className="w-4 h-4" /> : null;
+  // };
 
   // Charger l'historique
   const loadHistory = async () => {

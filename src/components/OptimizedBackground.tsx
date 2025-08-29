@@ -24,7 +24,7 @@ export default function OptimizedBackground({ className = '', alt = 'Background'
         ctx.fillRect(0, 0, 1, 1)
         const webpData = canvas.toDataURL('image/webp')
         setUseWebP(webpData.indexOf('data:image/webp') === 0)
-      } catch (e) {
+      } catch {
         setUseWebP(false)
       }
 
@@ -32,7 +32,7 @@ export default function OptimizedBackground({ className = '', alt = 'Background'
       try {
         const avifData = canvas.toDataURL('image/avif')
         setUseAvif(avifData.indexOf('data:image/avif') === 0)
-      } catch (e) {
+      } catch {
         setUseAvif(false)
       }
     }

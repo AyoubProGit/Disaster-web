@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { throttle } from 'lodash-es'
@@ -26,7 +27,7 @@ export default function ThreeScene() {
     scene.add(dir)
 
     // Création des cubes
-    for (let i = 0; i < 20; i++) {
+    for (let cubeIndex = 0; cubeIndex < 20; cubeIndex++) {
       const mat = new THREE.MeshPhongMaterial({ 
         color: Math.random() * 0xffffff, 
         shininess: 80 
@@ -46,19 +47,22 @@ export default function ThreeScene() {
     }
 
     // Animation
+    let animationId: number | undefined
     const animate = () => {
-      let i = 0
-      scene.traverse((o: any) => {
-        if (o.isMesh) {
-          o.rotation.x += 0.002 * ((i % 3) + 1)
-          o.rotation.y += 0.003 * ((i % 4) + 1)
+      let meshIndex = 0
+      scene.traverse((o: THREE.Object3D) => {
+        if (o instanceof THREE.Mesh) {
+          o.rotation.x += 0.002 * ((meshIndex % 3) + 1)
+          o.rotation.y += 0.003 * ((meshIndex % 4) + 1)
         }
-        i++
+        meshIndex++
       })
       renderer.render(scene, camera)
-      requestAnimationFrame(animate)
+      animationId = requestAnimationFrame(animate)
     }
-    animate()
+    
+    // Démarrer l'animation
+    animationId = requestAnimationFrame(animate)
 
     // Gestion du redimensionnement
     const onResize = throttle(() => {
@@ -71,13 +75,18 @@ export default function ThreeScene() {
     // Cleanup
     return () => {
       window.removeEventListener('resize', onResize)
+      if (animationId !== undefined) {
+        cancelAnimationFrame(animationId)
+      }
       renderer.dispose()
-      scene.traverse((o: any) => {
-        if (o.geometry) o.geometry.dispose()
-        if (o.material) {
-          Array.isArray(o.material) 
-            ? o.material.forEach((m: any) => m.dispose()) 
-            : o.material.dispose()
+      scene.traverse((o: THREE.Object3D) => {
+        if (o instanceof THREE.Mesh) {
+          if (o.geometry) o.geometry.dispose()
+          if (o.material) {
+            Array.isArray(o.material) 
+              ? o.material.forEach((m: THREE.Material) => m.dispose()) 
+              : o.material.dispose()
+          }
         }
       })
     }

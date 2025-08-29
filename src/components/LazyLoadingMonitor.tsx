@@ -6,7 +6,6 @@ import {
   Clock, 
   CheckCircle, 
   AlertCircle,
-  TrendingUp,
   Activity,
   Zap,
   Loader
