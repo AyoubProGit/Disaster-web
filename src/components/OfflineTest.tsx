@@ -196,7 +196,7 @@ const OfflineTest: React.FC = () => {
       // Tester différentes stratégies de cache
       const tests = [
         { url: '/', strategy: 'stale-while-revalidate' },
-        { url: '/static/big.css', strategy: 'cache-first' },
+        { url: '/favicon.svg', strategy: 'cache-first' },
         { url: '/api/server', strategy: 'network-first' }
       ]
 

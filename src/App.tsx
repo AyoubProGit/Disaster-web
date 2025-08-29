@@ -87,29 +87,30 @@ export default function App() {
   // Activer le préchargement intelligent des composants critiques
   usePreloadCriticalComponents()
 
-  const injectedRef = useRef(false)
+  // const injectedRef = useRef(false) // Plus utilisé
   const intervalRef = useRef<number>()
 
-  useEffect(() => {
-    if (injectedRef.current) return
-    injectedRef.current = true
-    const loadAssets = () => {
-      const h = document.head
-      const link = document.createElement('link')
-      link.rel = 'stylesheet'
-      link.href = 'http://localhost:5001/static/big.css'
-      h.appendChild(link)
-      const script = document.createElement('script')
-      script.src = 'http://localhost:5001/static/big.js'
-      script.crossOrigin = 'anonymous'
-      h.appendChild(script)
-    }
-    if (document.readyState === 'complete') {
-      loadAssets()
-    } else {
-      window.addEventListener('load', loadAssets, { once: true })
-    }
-  }, [])
+  // Suppression de la logique de chargement de fichiers inexistants
+  // useEffect(() => {
+  //   if (injectedRef.current) return
+  //   injectedRef.current = true
+  //   const loadAssets = () => {
+  //     const h = document.head
+  //     const link = document.createElement('link')
+  //     link.rel = 'stylesheet'
+  //     link.href = 'http://localhost:5001/static/big.css'
+  //     h.appendChild(link)
+  //     const script = document.createElement('script')
+  //     script.src = 'http://localhost:5001/static/big.js'
+  //     script.crossOrigin = 'anonymous'
+  //     h.appendChild(script)
+  //   }
+  //   if (document.readyState === 'complete') {
+  //     loadAssets()
+  //   } else {
+  //     window.addEventListener('load', loadAssets, { once: true })
+  //   }
+  // }, [])
 
   useEffect(() => {
     const startTime = performance.now();

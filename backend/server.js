@@ -28,10 +28,22 @@ app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false,
-    crossOriginOpenerPolicy: false
+    crossOriginOpenerPolicy: false,
+    // Désactiver complètement toutes les restrictions par défaut
+    noSniff: false,
+    ieNoOpen: false,
+    hsts: false,
+    frameguard: false,
+    xssFilter: false
 }));
 app.use(cors());
 app.use(compression());
+
+// Headers CSP personnalisés pour permettre l'exécution des scripts et styles
+app.use((req, res, next) => {
+    res.setHeader('Content-Security-Policy', "default-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: data:; style-src 'self' 'unsafe-inline' blob: data: https://fonts.googleapis.com; img-src 'self' blob: data:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' blob: data:;");
+    next();
+});
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // --- Static assets avec cache optimisé RGESN 7.x ---
