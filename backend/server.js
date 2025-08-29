@@ -52,4 +52,25 @@ app.get('/api/server', apiCacheMiddleware, (_, res) => {
 });
 // --- API payload optimisée avec pagination et streaming ---
 app.use('/api/payload', apiCacheMiddleware, payloadRouter);
+
+// --- Frontend build files ---
+const distPath = path.join(__dirname, '..', 'dist');
+app.use(express.static(distPath, {
+    maxAge: 31536000, // 1 an par défaut
+    etag: true,
+    lastModified: true
+}));
+
+// --- Favicon route spécifique ---
+app.get('/favicon.svg', (req, res) => {
+    const faviconPath = path.join(__dirname, '..', 'public', 'favicon.svg');
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.sendFile(faviconPath, { maxAge: 86400000 }); // 24h cache
+});
+
+// --- Serve React app for all other routes (SPA routing) ---
+app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+});
+
 app.listen(PORT, () => console.log(`backend on :${PORT}`));
